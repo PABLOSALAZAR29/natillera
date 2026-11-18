@@ -1,5 +1,6 @@
 class Ciclo < ApplicationRecord
   enum :estado, { activo: 0, cerrado: 1 }
+  has_many :inscripciones, dependent: :restrict_with_error
 
   normalizes :nombre, with: ->(valor) { valor.strip }
 
@@ -24,5 +25,5 @@ class Ciclo < ApplicationRecord
 
     errors.add(:estado, "ya existe un ciclo activo; ciérralo antes de abrir otro")
  end
- 
+
 end

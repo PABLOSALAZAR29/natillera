@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_11_18_010648) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_18_011748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_18_010648) do
     t.index ["estado"], name: "index_ciclos_on_unico_activo", unique: true, where: "(estado = 0)"
   end
 
+  create_table "inscripciones", force: :cascade do |t|
+    t.bigint "persona_id", null: false
+    t.bigint "ciclo_id", null: false
+    t.integer "valor_ahorro", null: false
+    t.integer "periodicidad", default: 0, null: false
+    t.integer "estado", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ciclo_id"], name: "index_inscripciones_on_ciclo_id"
+    t.index ["persona_id"], name: "index_inscripciones_on_persona_id"
+  end
+
   create_table "personas", force: :cascade do |t|
     t.string "nombre", null: false
     t.string "documento", null: false
@@ -38,4 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_18_010648) do
     t.datetime "updated_at", null: false
     t.index ["documento"], name: "index_personas_on_documento", unique: true
   end
+
+  add_foreign_key "inscripciones", "ciclos"
+  add_foreign_key "inscripciones", "personas"
 end
